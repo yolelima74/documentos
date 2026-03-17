@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Declaração Descontinuidade de Renda</title>
+<style>
+  /* Cálculo previsível de dimensões */
+  * { box-sizing: border-box; }
+
+  body{
+    font-family: Arial, sans-serif;
+    background:#e5e5e5;   /* só na TELA; removido na impressão */
+    margin: 0;
+    padding: 20px;        /* respiro visual na TELA */
+  }
+
+  /* --- Folha A4 (retrato) na TELA --- */
+  .container{
+    width: 210mm;           /* largura A4 */
+    min-height: 297mm;      /* altura A4 */
+    margin: 10mm auto;      /* centraliza na TELA */
+    background:#fff;
+    padding: 15mm;          /* margem interna do conteúdo */
+    box-shadow: 0 0 8px rgba(0,0,0,.15); /* efeito visual na TELA */
+  }
+
+  /* ======== TEXTO SUPERIOR (conforme a imagem) ======== */
+  .topo{
+    margin-top: 20mm;       /* <<< distância acima do texto (ajuste aqui) */
+    font-weight: bold;      /* parágrafo principal em negrito */
+    font-size: 16px;
+    text-align: left;       /* alinhado à esquerda, como na imagem */
+    line-height: 1.6;
+    margin-bottom: 18mm;    /* espaço abaixo do bloco */
+    color: #ff0000;         /* texto principal em vermelho */
+  }
+  /* Trechos que NÃO são negrito (nem vermelhos) */
+  .topo .normal {
+    font-weight: normal;
+    color: #000;            /* preto */
+  }
+  /* “NATO DIGITAL” com fundo amarelo e negrito */
+  .destaque {
+    background: yellow;
+    padding: 2px 4px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  /* Títulos e textos */
+  h2{
+    text-align:center;
+    margin-bottom: 16mm;
+  }
+
+  p{
+    text-align:justify;
+    font-size:14px;
+    line-height:1.8;
+    margin: 0 0 6mm 0;
+  }
+
+  input{
+    border:none;
+    border-bottom:1px solid #000;
+    outline:none;
+    font-size:14px;
+    text-transform:uppercase;
+  }
+
+  .bold-field{ font-weight:bold; }
+  .pequeno{ width:40px; }
+  .medio{ width:150px; }
+  .grande{ width:280px; }
+
+  .data{
+    font-weight:normal; /* DATA NÃO É NEGRITO */
+  }
+
+  .assinatura{
+    margin-top: 20mm;
+    text-align:center;
+  }
+
+  .linha-ass{
+    margin-top: 10mm;
+    border-bottom:1px solid #000;
+    width:60%;
+    margin-left:auto;
+    margin-right:auto;
+    height:30px;
+  }
+
+  .sub{
+    text-align:center;
+    font-size:13px;
+    margin-top:5px;
+  }
+
+  /* --- Configuração de IMPRESSÃO A4 --- */
+  @page{
+    size: A4;          /* garante A4 na impressão */
+    margin: 12mm;      /* margens da página (ajuste conforme necessário) */
+  }
+
+  @media print{
+    html, body{
+      height: 100%;
+      background: #fff !important;
+      padding: 0;              /* sem padding do body ao imprimir */
+    }
+
+    .container{
+      width: auto;             /* o navegador ajusta para A4 */
+      min-height: auto;
+      margin: 0;               /* sem margens externas na impressão */
+      padding: 12mm;           /* margem interna do conteúdo impresso */
+      box-shadow: none;        /* sombra não imprime */
+      page-break-after: always;/* cada .container vira uma página */
+    }
+
+    /* Se quiser que a faixa superior não imprima, descomente: */
+    /* .topo { display: none; } */
+  }
+
+  /* DOWNLOAD BUTTON */
+  #download-bar { position: fixed; bottom: 24px; right: 28px; z-index: 9999; }
+  #btn-download {
+    background: #003791; color: #fff; border: none;
+    padding: 12px 24px; font-family: Arial, sans-serif; font-size: 13px;
+    font-weight: bold; border-radius: 6px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    display: flex; align-items: center; gap: 8px; transition: background 0.2s;
+  }
+  #btn-download:hover { background: #00509e; }
+  #btn-download:disabled { opacity: 0.7; cursor: default; }
+  @media print { #download-bar { display: none; } }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Bloco superior igual ao layout da imagem -->
+    <div class="topo">
+      Caso o cliente tenha declarado Imposto de Renda ainda que o valor esteja abaixo do limite de
+      isenção, será obrigatório apresentar o IRPF, havendo declarado valor que
+      <span class="normal">que atualmente o cliente não mais possua e caso se trate de um processo</span>
+      <span class="destaque">NATO DIGITAL</span>,
+      deverá ser preenchida a declaração abaixo conforme modelo e assinar ao final da página com assinatura GOV.</span>
+    </div>
+
+    <h2>DECLARAÇÃO</h2>
+
+    <p>
+      EU, <input type="text" class="bold-field grande">,
+      PORTADOR(A) DO CPF <input type="text" class="bold-field medio">,
+      RG <input type="text" class="bold-field medio">,
+      DECLARO SOB AS PENAS DA LEI JUNTO A CAIXA ECONÔMICA FEDERAL QUE NÃO POSSUO MAIS O RENDIMENTO DECLARADO NO MEU IMPOSTO DE RENDA – PESSOA FÍSICA, EXERCÍCIO <input type="text" class="bold-field pequeno"> - ANO CALENDÁRIO <input type="text" class="bold-field pequeno">,
+      NO CAMPO: RENDIMENTOS TRIBUTÁVEIS RECEBIDOS DE PESSOA JURÍDICA PELO TITULAR, REFERENTE À FONTE PAGADORA <input type="text" class="bold-field grande">,
+      CNPJ: <input type="text" class="bold-field medio">,
+      NO VALOR DE R$ <input type="text" class="bold-field medio">.
+      AFIRMO AINDA QUE ESTE RENDIMENTO NÃO É ORIUNDO DE VÍNCULO EMPREGATÍCIO.
+    </p>
+
+    <p><strong>FEIRA DE SANTANA - BA.</strong></p>
+    <p>
+      <input type="text" class="data pequeno"> /
+      <input type="text" class="data pequeno"> /
+      <input type="text" class="data pequeno">
+    </p>
+
+    <div class="assinatura">
+      <div class="linha-ass"></div>
+      <div class="sub">(Assinatura conforme o documento de identificação)</div>
+    </div>
+
+  </div>
+
+<div id="download-bar">
+  <button id="btn-download" onclick="baixarPDF()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+    </svg>
+    Baixar PDF
+  </button>
+</div>
+<script>
+async function baixarPDF() {
+  const btn = document.getElementById('btn-download');
+  btn.textContent = 'Gerando...'; btn.disabled = true;
+  const pages = document.querySelectorAll('.container');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  for (let i = 0; i < pages.length; i++) {
+    if (i > 0) pdf.addPage();
+    const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, logging: false });
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.98), 'JPEG', 0, 0, 210, 297);
+  }
+  pdf.save('Declaracao_de_Descontinuidade.pdf');
+  btn.innerHTML = 'Baixar PDF';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
