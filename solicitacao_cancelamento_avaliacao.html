@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<title>Solicitação de Cancelamento de Avaliação</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #e5e5e5;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 10mm auto;
+    background: #fff;
+    padding: 20mm 22mm 16mm 22mm;
+    box-shadow: 0 0 8px rgba(0,0,0,.15);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Aviso próprio punho */
+  .aviso-punho {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 30mm;
+    color: #000;
+  }
+
+  /* Título */
+  h2 {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 14mm;
+    letter-spacing: 0.3px;
+  }
+
+  /* Destinatário */
+  .dest {
+    font-size: 14px;
+    margin-bottom: 10mm;
+  }
+
+  /* Parágrafos */
+  p {
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: justify;
+    margin: 0 0 8mm 0;
+  }
+
+  /* Campos inline */
+  input[type="text"] {
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    background: transparent;
+    padding: 0 2px;
+    text-align: center;
+  }
+  input[type="text"]:focus { background: #fffde7; }
+
+  .f-nome     { width: 240px; }
+  .f-rg       { width: 110px; }
+  .f-cpf      { width: 110px; }
+  .f-empreend { width: 200px; }
+  .f-pp       { width: 36px; }
+  .f-mes      { width: 100px; }
+  .f-ano      { width: 36px; }
+
+  /* Assinatura */
+  .assinatura {
+    margin-top: 18mm;
+    text-align: center;
+  }
+  .linha-ass {
+    margin: 0 auto 4px auto;
+    border-bottom: 1px solid #000;
+    width: 55%;
+    height: 30px;
+  }
+  .sub {
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+  }
+
+  /* DOWNLOAD BUTTON */
+  #download-bar { position: fixed; bottom: 24px; right: 28px; z-index: 9999; }
+  #btn-download {
+    background: #003791; color: #fff; border: none;
+    padding: 12px 24px; font-family: Arial, sans-serif; font-size: 13px;
+    font-weight: bold; border-radius: 6px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    display: flex; align-items: center; gap: 8px; transition: background 0.2s;
+  }
+  #btn-download:hover { background: #00509e; }
+  #btn-download:disabled { opacity: 0.7; cursor: default; }
+  @media print { #download-bar { display: none; } }
+
+  @page { size: A4; margin: 0; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .container { box-shadow: none; margin: 0; }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="aviso-punho">(Texto abaixo a ser transcrito de PRÓPRIO PUNHO)</div>
+
+  <h2>SOLICITAÇÃO DE CANCELAMENTO DE AVALIAÇÃO</h2>
+
+  <div class="dest">A CEF,</div>
+
+  <p>
+    Eu <input type="text" class="f-nome" placeholder="nome">,
+    portador do RG nº <input type="text" class="f-rg" placeholder="RG">,
+    CPF: <input type="text" class="f-cpf" placeholder="CPF">,
+    solicito a Caixa Econômica Federal, que cancele a avaliação e proposta habitacional e/ou Comercial
+    feita anteriormente, pois tenho interesse em adquirir uma unidade no
+    <input type="text" class="f-empreend" placeholder="nome do empreendimento">,
+    em Feira de Santana – BA.
+  </p>
+
+  <p>Sem mais,</p>
+
+  <p>
+    Feira de Santana/BA,
+    <input type="text" class="f-pp" placeholder="dia"> de
+    <input type="text" class="f-mes" placeholder="mês"> de
+    20<input type="text" class="f-ano" placeholder="aa">.
+  </p>
+
+  <div class="assinatura">
+    <div class="linha-ass"></div>
+    <div class="sub">(ASSINATURA)</div>
+  </div>
+
+</div>
+
+<!-- BOTÃO DE DOWNLOAD -->
+<div id="download-bar">
+  <button id="btn-download" onclick="baixarPDF()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+    </svg>
+    Baixar PDF
+  </button>
+</div>
+
+<script>
+async function baixarPDF() {
+  const btn = document.getElementById('btn-download');
+  btn.textContent = 'Gerando...'; btn.disabled = true;
+  const pages = document.querySelectorAll('.container');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  for (let i = 0; i < pages.length; i++) {
+    if (i > 0) pdf.addPage();
+    const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, logging: false });
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.98), 'JPEG', 0, 0, 210, 297);
+  }
+  pdf.save('Solicitacao_Cancelamento_Avaliacao.pdf');
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg> Baixar PDF';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
